@@ -1,0 +1,56 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:context="com.codepath.assignment.flicker.fragment.MovieDetailFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/poster_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/movie_title_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_below="@id/poster_image_view"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
+            tools:text="Movie Title"/>
+
+        <android.support.v7.widget.AppCompatRatingBar
+            android:id="@+id/ratings_bar"
+            android:isIndicator="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:numStars="5"
+            android:layout_below="@id/movie_title_text_view"
+            android:layout_marginBottom="16dp"
+            />
+
+        <TextView
+            android:id="@+id/movie_desc_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            tools:text="Movie Desc"
+            android:layout_below="@id/ratings_bar"
+            />
+
+
+
+    </RelativeLayout>
+</ScrollView>
+

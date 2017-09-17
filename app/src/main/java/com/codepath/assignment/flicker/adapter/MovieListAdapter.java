@@ -19,6 +19,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 import okhttp3.OkHttpClient;
 
 /**
@@ -31,14 +32,24 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private OkHttpClient client;
     private Picasso mPicasso;
     private Context mContext;
+    private onItemClickListener mListener;
 
     private final int MOVIE = 0, POPULAR_MOVIE = 1;
+
+    public interface onItemClickListener{
+        void onMovieClick(MovieData movieData);
+        void onPopularMovieClick(MovieData movieData);
+    }
 
     public MovieListAdapter(Context context, List<MovieData> moviesList){
         mContext = context;
         mMoviesList = moviesList;
         client = NetworkUtil.getInstance().getHttpClient();
         mPicasso = new Picasso.Builder(context).downloader(new OkHttp3Downloader(client)).build();
+    }
+
+    public void setListener(onItemClickListener listener) {
+        mListener = listener;
     }
 
     @Override
@@ -113,6 +124,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         MovieViewHolder(View itemView){
             super(itemView);
             ButterKnife.bind(this,itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onMovieClick(mMoviesList.get(getAdapterPosition()));
+                }
+            });
         }
 
         void bindMovie(MovieData movieData){
@@ -120,6 +137,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 titleTextView.setText(movieData.getTitle());
                 movieDescTextView.setText(movieData.getOverview());
                 mPicasso.load(movieData.getPosterImageUrl(MovieData.POSTER_SIZES.W780))
+                        .transform(new RoundedCornersTransformation(10,10))
                         .resize(0,780)
                         .into(posterImageView);
             }
@@ -132,7 +150,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @BindView(R.id.popular_movie_image_view)
         ImageView mImageView;
 
-
         @BindView(R.id.movie_title_text_view)
         @Nullable
         TextView mMovieTitle;
@@ -144,11 +161,18 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         PopularMovieViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onPopularMovieClick(mMoviesList.get(getAdapterPosition()));
+                }
+            });
         }
 
         void bindPopularMovie(MovieData movieData){
             if(movieData != null){
                 mPicasso.load(movieData.getBackdropImageUrl(MovieData.BACKDROP_SIZES.W1280))
+                        .transform(new RoundedCornersTransformation(10,10))
                         .resize(1280,0)
                         .into(mImageView);
                 if(itemView.findViewById(R.id.movie_title_text_view) != null){

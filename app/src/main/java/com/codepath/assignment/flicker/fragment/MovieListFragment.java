@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codepath.assignment.flicker.R;
+import com.codepath.assignment.flicker.activity.MovieDetailActivity;
 import com.codepath.assignment.flicker.adapter.MovieListAdapter;
 import com.codepath.assignment.flicker.model.MovieData;
 import com.codepath.assignment.flicker.util.NetworkUtil;
@@ -56,8 +57,6 @@ public class MovieListFragment extends Fragment {
         setRetainInstance(true);
         mNetworkUtil = NetworkUtil.getInstance();
         mMovieData = new MovieData();
-
-
     }
 
     @Override
@@ -69,6 +68,17 @@ public class MovieListFragment extends Fragment {
         mUnbinder = ButterKnife.bind(this,v);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mAdapter = new MovieListAdapter(getActivity(),mMoviesList);
+        mAdapter.setListener(new MovieListAdapter.onItemClickListener() {
+            @Override
+            public void onMovieClick(MovieData movieData) {
+                startActivity(MovieDetailActivity.getNewIntent(getActivity(),movieData));
+            }
+
+            @Override
+            public void onPopularMovieClick(MovieData movieData) {
+
+            }
+        });
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
          if(savedInstanceState == null)
@@ -93,7 +103,7 @@ public class MovieListFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d("RESPONSE","Destroy view has been called");
+       // Log.d("RESPONSE","Destroy view has been called");
         mUnbinder.unbind();
         mNetworkUtil.cancelMovieCall();
     }

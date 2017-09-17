@@ -20,8 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MovieData implements Parcelable
-{
+public class MovieData implements Parcelable {
 
     @SerializedName("vote_count")
     @Expose
@@ -106,37 +105,8 @@ public class MovieData implements Parcelable
     private static final String image_base_url = "http://image.tmdb.org/t/p/";
 
 
-    public final static Parcelable.Creator<MovieData> CREATOR = new Creator<MovieData>() {
 
 
-        @SuppressWarnings({
-                "unchecked"
-        })
-        public MovieData createFromParcel(Parcel in) {
-            MovieData instance = new MovieData();
-            instance.voteCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.video = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.voteAverage = ((Double) in.readValue((Double.class.getClassLoader())));
-            instance.title = ((String) in.readValue((String.class.getClassLoader())));
-            instance.popularity = ((Double) in.readValue((Double.class.getClassLoader())));
-            instance.posterPath = ((String) in.readValue((String.class.getClassLoader())));
-            instance.originalLanguage = ((String) in.readValue((String.class.getClassLoader())));
-            instance.originalTitle = ((String) in.readValue((String.class.getClassLoader())));
-            in.readList(instance.genreIds, (java.lang.Integer.class.getClassLoader()));
-            instance.backdropPath = ((String) in.readValue((String.class.getClassLoader())));
-            instance.adult = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.overview = ((String) in.readValue((String.class.getClassLoader())));
-            instance.releaseDate = ((String) in.readValue((String.class.getClassLoader())));
-            return instance;
-        }
-
-        public MovieData[] newArray(int size) {
-            return (new MovieData[size]);
-        }
-
-    }
-            ;
 
     public Integer getVoteCount() {
         return voteCount;
@@ -280,26 +250,7 @@ public class MovieData implements Parcelable
         return movies;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(voteCount);
-        dest.writeValue(id);
-        dest.writeValue(video);
-        dest.writeValue(voteAverage);
-        dest.writeValue(title);
-        dest.writeValue(popularity);
-        dest.writeValue(posterPath);
-        dest.writeValue(originalLanguage);
-        dest.writeValue(originalTitle);
-        dest.writeList(genreIds);
-        dest.writeValue(backdropPath);
-        dest.writeValue(adult);
-        dest.writeValue(overview);
-        dest.writeValue(releaseDate);
-    }
 
-    public int describeContents() {
-        return 0;
-    }
 
     @Override
     public String toString() {
@@ -320,4 +271,61 @@ public class MovieData implements Parcelable
                 ", releaseDate='" + releaseDate + '\'' +
                 '}';
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.voteCount);
+        dest.writeValue(this.id);
+        dest.writeValue(this.video);
+        dest.writeValue(this.voteAverage);
+        dest.writeString(this.title);
+        dest.writeValue(this.popularity);
+        dest.writeString(this.posterPath);
+        dest.writeString(this.originalLanguage);
+        dest.writeString(this.originalTitle);
+        dest.writeList(this.genreIds);
+        dest.writeString(this.backdropPath);
+        dest.writeValue(this.adult);
+        dest.writeString(this.overview);
+        dest.writeString(this.releaseDate);
+    }
+
+    public MovieData() {
+    }
+
+    protected MovieData(Parcel in) {
+        this.voteCount = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.video = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.voteAverage = (Double) in.readValue(Double.class.getClassLoader());
+        this.title = in.readString();
+        this.popularity = (Double) in.readValue(Double.class.getClassLoader());
+        this.posterPath = in.readString();
+        this.originalLanguage = in.readString();
+        this.originalTitle = in.readString();
+        this.genreIds = new ArrayList<Integer>();
+        in.readList(this.genreIds, Integer.class.getClassLoader());
+        this.backdropPath = in.readString();
+        this.adult = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.overview = in.readString();
+        this.releaseDate = in.readString();
+    }
+
+    public static final Parcelable.Creator<MovieData> CREATOR = new Parcelable.Creator<MovieData>() {
+        @Override
+        public MovieData createFromParcel(Parcel source) {
+            return new MovieData(source);
+        }
+
+        @Override
+        public MovieData[] newArray(int size) {
+            return new MovieData[size];
+        }
+    };
 }

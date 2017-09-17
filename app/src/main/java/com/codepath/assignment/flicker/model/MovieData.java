@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 
 import com.google.gson.Gson;
@@ -64,6 +65,47 @@ public class MovieData implements Parcelable
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
+
+
+    public enum BACKDROP_SIZES {
+        W300("w300"),
+        W780("w780"),
+        W1280("w1280"),
+        ORIGINAL("original");
+
+
+        private String backdropSize;
+        BACKDROP_SIZES(String s) {
+            backdropSize = s;
+        }
+
+        public String getBackdropSize(){
+            return backdropSize;
+        }
+    }
+
+    public enum POSTER_SIZES{
+            W92("w92"),
+            W154("w154"),
+            W185("w185"),
+            W342("w342"),
+            W500("w500"),
+            W780("w780"),
+            ORIGINAL("original");
+
+        private String posterSize;
+        POSTER_SIZES(String s){
+            posterSize = s;
+        }
+
+        public String getPosterSize(){
+            return posterSize;
+        }
+    }
+
+    private static final String image_base_url = "http://image.tmdb.org/t/p/";
+
+
     public final static Parcelable.Creator<MovieData> CREATOR = new Creator<MovieData>() {
 
 
@@ -148,6 +190,14 @@ public class MovieData implements Parcelable
         return posterPath;
     }
 
+    public String getPosterImageUrl(POSTER_SIZES size){
+        return image_base_url + size.getPosterSize() + "/" + getPosterPath().substring(1);
+    }
+
+    public String getBackdropImageUrl(BACKDROP_SIZES size){
+        return image_base_url + size.getBackdropSize() + "/" + getBackdropPath().substring(1);
+    }
+
     public void setPosterPath(String posterPath) {
         this.posterPath = posterPath;
     }
@@ -219,6 +269,7 @@ public class MovieData implements Parcelable
                 if(movieObject != null){
                     MovieData movieData = gson.fromJson(movieObject.toString(), MovieData.class);
                     //Log.d("RESPONSE",movieData.toString());
+                    //Log.d("RESPONSE",movieData.getPosterImageUrl(POSTER_SIZES.W342));
                     movies.add(movieData);
                 }
             }

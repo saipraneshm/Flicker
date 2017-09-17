@@ -14,18 +14,16 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/**
- * Created by saip92 on 9/13/2017.
- */
 
 public class NetworkUtil {
 
 
     private volatile static NetworkUtil sInstance;
-    private static final OkHttpClient sOkHttpClient = new OkHttpClient();
+    private final OkHttpClient mHttpClient = new OkHttpClient();
     private static final String TAG = NetworkUtil.class.getSimpleName();
 
     private static final String MOVIE_DB_API = "https://api.themoviedb.org/3/movie";
+    private static final String MOVIE_DATA = "MOVIE_DATA";
     private static final Uri NOW_PLAYING_ENDPOINT = Uri.parse(MOVIE_DB_API)
             .buildUpon()
             .appendPath("now_playing")
@@ -46,7 +44,7 @@ public class NetworkUtil {
     }
 
     public OkHttpClient getHttpClient(){
-        return sOkHttpClient;
+        return mHttpClient;
     }
 
     public interface OnResponseListener{
@@ -58,6 +56,7 @@ public class NetworkUtil {
 
         Request request = new Request.Builder()
                 .url(NOW_PLAYING_ENDPOINT.toString())
+                .tag(MOVIE_DATA)
                 .build();
 
         OkHttpClient client = getHttpClient();
@@ -73,7 +72,7 @@ public class NetworkUtil {
                     if(response.body() != null) {
                         String responseData = response.body().string();
                         final JSONObject json = new JSONObject(responseData);
-                        Log.d(TAG,"response received: " + json);
+                       // Log.d(TAG,"response received: " + json);
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -90,6 +89,26 @@ public class NetworkUtil {
             }
         });
     }
+
+    public void cancelMovieCall(){
+        Log.d("RESPONSE","cancelMovie called");
+        OkHttpClient client = getHttpClient();
+        for(Call call : client.dispatcher().queuedCalls()) {
+            if(call.request().tag().equals(MOVIE_DATA)) {
+                Log.d(TAG, "cancelling call");
+                call.cancel();
+            }
+        }
+        for(Call call : client.dispatcher().runningCalls()) {
+            if(call.request().tag().equals(MOVIE_DATA)){
+                Log.d(TAG,"cancelling call");
+                call.cancel();
+            }
+        }
+
+        client.dispatcher().executorService().shutdown();
+    }
+
 
 
 

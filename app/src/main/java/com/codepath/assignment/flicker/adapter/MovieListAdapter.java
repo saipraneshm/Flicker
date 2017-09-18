@@ -138,6 +138,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 movieDescTextView.setText(movieData.getOverview());
                 mPicasso.load(movieData.getPosterImageUrl(MovieData.POSTER_SIZES.W780))
                         .transform(new RoundedCornersTransformation(10,10))
+                        .placeholder(R.drawable.placeholder_150x280)
                         .resize(0,780)
                         .into(posterImageView);
             }
@@ -173,11 +174,23 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if(movieData != null){
                 mPicasso.load(movieData.getBackdropImageUrl(MovieData.BACKDROP_SIZES.W1280))
                         .transform(new RoundedCornersTransformation(10,10))
+                        .placeholder(R.drawable.placeholder_780x500)
                         .resize(1280,0)
                         .into(mImageView);
                 if(itemView.findViewById(R.id.movie_title_text_view) != null){
                     mMovieTitle.setText(movieData.getTitle());
                     mMovieDesc.setText(movieData.getOverview());
+                    mPicasso.load(movieData.getBackdropImageUrl(MovieData.BACKDROP_SIZES.W1280))
+                            .transform(new RoundedCornersTransformation(10,10))
+                            .placeholder(R.drawable.placeholder_400x280)
+                            .resize(1280,0)
+                            .into(mImageView);
+                }else{
+                    mPicasso.load(movieData.getBackdropImageUrl(MovieData.BACKDROP_SIZES.W1280))
+                            .transform(new RoundedCornersTransformation(10,10))
+                            .placeholder(R.drawable.placeholder_780x500)
+                            .resize(1280,0)
+                            .into(mImageView);
                 }
             }
         }

@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.assignment.flicker.R;
+import com.codepath.assignment.flicker.activity.YoutubePlayerActivity;
 import com.codepath.assignment.flicker.model.MovieData;
+import com.codepath.assignment.flicker.model.TrailerHelper;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -79,6 +81,16 @@ public class MovieDetailFragment extends Fragment {
                     .load(mMovieData.getBackdropImageUrl(MovieData.BACKDROP_SIZES.W1280))
                     .resize(0,1280)
                     .into(mPosterImage);
+
+            mPosterImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(YoutubePlayerActivity.newIntent(getActivity(),
+                            TrailerHelper.getInstance()
+                                    .getFirstAvailableTrailerInfo
+                                            (String.valueOf(mMovieData.getId())).getKey()));
+                }
+            });
         }
 
         // Inflate the layout for this fragment

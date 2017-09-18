@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -69,6 +70,7 @@ public class MovieListFragment extends Fragment {
         mUnbinder = ButterKnife.bind(this,v);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mAdapter = new MovieListAdapter(getActivity(),mMoviesList);
+
         mAdapter.setListener(new MovieListAdapter.onItemClickListener() {
             @Override
             public void onMovieClick(MovieData movieData) {
@@ -85,6 +87,8 @@ public class MovieListFragment extends Fragment {
         });
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView
+                .addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
          if(savedInstanceState == null)
             updateAdapter();
         return v;

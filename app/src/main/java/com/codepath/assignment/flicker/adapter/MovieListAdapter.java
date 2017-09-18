@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.codepath.assignment.flicker.R;
 import com.codepath.assignment.flicker.model.MovieData;
+import com.codepath.assignment.flicker.model.TrailerData;
+import com.codepath.assignment.flicker.model.TrailerHelper;
 import com.codepath.assignment.flicker.util.NetworkUtil;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
@@ -45,7 +47,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         mContext = context;
         mMoviesList = moviesList;
         client = NetworkUtil.getInstance().getHttpClient();
-        mPicasso = new Picasso.Builder(context).downloader(new OkHttp3Downloader(client)).build();
+        mPicasso = new Picasso.Builder(mContext).downloader(new OkHttp3Downloader(client)).build();
     }
 
     public void setListener(onItemClickListener listener) {
@@ -148,7 +150,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     class PopularMovieViewHolder extends RecyclerView.ViewHolder{
 
-        @BindView(R.id.popular_movie_image_view)
+        @BindView(R.id.movie_image_view)
         ImageView mImageView;
 
         @BindView(R.id.movie_title_text_view)
@@ -158,6 +160,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @BindView(R.id.movie_desc_text_view)
         @Nullable
         TextView mMovieDesc;
+
+        @BindView(R.id.overlay_play_icon_image_view)
+        ImageView playIconImageView;
 
         PopularMovieViewHolder(View itemView) {
             super(itemView);
@@ -172,11 +177,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         void bindPopularMovie(MovieData movieData){
             if(movieData != null){
-                mPicasso.load(movieData.getBackdropImageUrl(MovieData.BACKDROP_SIZES.W1280))
-                        .transform(new RoundedCornersTransformation(10,10))
-                        .placeholder(R.drawable.placeholder_780x500)
-                        .resize(1280,0)
-                        .into(mImageView);
+                /*if(TrailerHelper.getInstance().getTrailerInfoList(String.valueOf(movieData.getId())) == null){
+                    playIconImageView.setVisibility(View.INVISIBLE);
+                    itemView.setOnClickListener(null);
+                }*/
                 if(itemView.findViewById(R.id.movie_title_text_view) != null){
                     mMovieTitle.setText(movieData.getTitle());
                     mMovieDesc.setText(movieData.getOverview());

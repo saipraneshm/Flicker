@@ -5,13 +5,12 @@
                 android:layout_marginTop="@dimen/widget_margin_12dp"
                 android:layout_marginBottom="@dimen/widget_margin_12dp">
 
-    <ImageView
-        android:id="@+id/popular_movie_image_view"
-        android:layout_marginLeft="@dimen/widget_margin_16dp"
-        android:layout_marginRight="@dimen/widget_margin_16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        >
-    </ImageView>
+
+        <include layout="@layout/play_icon_overlay_layout"
+                 android:id="@+id/include_play_icon_overlay"
+                 android:layout_marginLeft="@dimen/widget_margin_16dp"
+                 android:layout_marginRight="@dimen/widget_margin_16dp"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerInParent="true"/>
 </RelativeLayout>

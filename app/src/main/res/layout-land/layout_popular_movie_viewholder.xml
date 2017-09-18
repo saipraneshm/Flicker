@@ -5,24 +5,25 @@
                 android:layout_marginBottom="@dimen/widget_margin_12dp"
                 android:layout_marginTop="@dimen/widget_margin_12dp"
                 xmlns:tools="http://schemas.android.com/tools">
-    <ImageView
-        android:id="@+id/popular_movie_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_alignParentStart="true"/>
+
+    <include android:id="@+id/include_play_icon_overlay"
+             layout="@layout/play_icon_overlay_layout"
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+             android:layout_alignParentLeft="true"
+             android:layout_marginLeft="16dp"
+             android:layout_marginStart="16dp"
+             android:layout_marginEnd="16dp"
+             android:layout_marginRight="16dp"
+             android:layout_alignParentStart="true"/>
 
     <TextView
         android:id="@+id/movie_title_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Movie Title"
-        android:layout_toRightOf="@id/popular_movie_image_view"
-        android:layout_toEndOf="@id/popular_movie_image_view"
+        android:layout_toRightOf="@id/include_play_icon_overlay"
+        android:layout_toEndOf="@id/include_play_icon_overlay"
         style="@style/TextAppearance.AppCompat.Headline"
         android:layout_marginBottom="4dp"
         android:layout_alignParentRight="true"
@@ -39,7 +40,7 @@
         android:layout_alignParentEnd="true"
         style="@style/TextAppearance.AppCompat.Body1"
         android:layout_below="@id/movie_title_text_view"
-        android:layout_toRightOf="@id/popular_movie_image_view"
-        android:layout_toEndOf="@id/popular_movie_image_view"
+        android:layout_toRightOf="@id/include_play_icon_overlay"
+        android:layout_toEndOf="@id/include_play_icon_overlay"
         />
 </RelativeLayout>

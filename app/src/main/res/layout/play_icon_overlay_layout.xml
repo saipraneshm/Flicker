@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/play_icon_overlay_frameLayout"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/movie_image_view"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.8"
+        />
+
+    <ImageView
+        android:id="@+id/overlay_play_icon_image_view"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:alpha="0.65"
+        android:src="@drawable/ic_play_circle_outline_white_48dp"
+        android:layout_gravity="center_horizontal|center_vertical"/>
+</FrameLayout>

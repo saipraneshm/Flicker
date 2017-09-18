@@ -8,19 +8,21 @@
         android:layout_height="match_parent">
 
 
-        <ImageView
-            android:id="@+id/poster_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="@dimen/widget_margin_16dp"/>
+
+        <include layout="@layout/play_icon_overlay_layout"
+                 android:id="@+id/include_play_icon_overlay"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentTop="true"
+                 android:layout_marginBottom="@dimen/widget_margin_16dp"
+                 />
 
         <TextView
             android:id="@+id/movie_title_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_below="@id/poster_image_view"
+            android:layout_below="@id/include_play_icon_overlay"
             android:layout_marginStart="@dimen/widget_margin_16dp"
             android:layout_marginLeft="@dimen/widget_margin_16dp"
             android:layout_marginBottom="@dimen/widget_margin_16dp"

@@ -13,7 +13,6 @@ import com.codepath.assignment.flicker.model.MovieData;
 public class MovieDetailActivity extends SingleFragmentActivity {
 
     private static final String EXTRA_MOVIE_DATA = "extraMovieData";
-
     public static Intent getNewIntent(Context context,MovieData movieData){
         Intent intent = new Intent(context, MovieDetailActivity.class);
         intent.putExtra(EXTRA_MOVIE_DATA,movieData);

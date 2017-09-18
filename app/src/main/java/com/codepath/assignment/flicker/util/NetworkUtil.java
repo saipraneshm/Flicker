@@ -3,6 +3,8 @@ package com.codepath.assignment.flicker.util;
 
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import org.json.JSONException;
@@ -51,12 +53,48 @@ public class NetworkUtil {
         void onSuccess(JSONObject jsonObject);
     }
 
-    public void getCurrentlyPlayingMovies(final AppCompatActivity activity,
-                                          final OnResponseListener listener){
+    public void getCurrentlyPlayingMovies(AppCompatActivity activity,
+                                          OnResponseListener listener){
 
+        makeHttpRequest(activity,listener,NOW_PLAYING_ENDPOINT,false);
+    }
+
+    public void cancelMovieCall(){
+        Log.d("RESPONSE","cancelMovie called");
+        OkHttpClient client = getHttpClient();
+        /*for(Call call : client.dispatcher().queuedCalls()) {
+            if(call.request().tag().equals(MOVIE_DATA)) {
+                Log.d(TAG, "cancelling call");
+                call.cancel();
+            }
+        }
+        for(Call call : client.dispatcher().runningCalls()) {
+            if(call.request().tag().equals(MOVIE_DATA)){
+                Log.d(TAG,"cancelling call");
+                call.cancel();
+            }
+        }*/
+        client.dispatcher().executorService().shutdown();
+    }
+
+    public void getTrailerDataForMovie(@NonNull String movieId, AppCompatActivity activity,
+                                        OnResponseListener listener){
+        Uri TRAILER_URI = Uri.parse(MOVIE_DB_API)
+                .buildUpon()
+                .appendPath(movieId)
+                .appendPath("videos")
+                .appendQueryParameter("api_key","68851cef4b730bead98aa3172c93d2b5")
+                .build();
+
+        makeHttpRequest(activity, listener, TRAILER_URI,true);
+
+    }
+
+    private void makeHttpRequest
+            (final AppCompatActivity activity, final OnResponseListener listener, Uri uri,
+             final boolean runOnbackground) {
         Request request = new Request.Builder()
-                .url(NOW_PLAYING_ENDPOINT.toString())
-                .tag(MOVIE_DATA)
+                .url(uri.toString())
                 .build();
 
         OkHttpClient client = getHttpClient();
@@ -72,14 +110,17 @@ public class NetworkUtil {
                     if(response.body() != null) {
                         String responseData = response.body().string();
                         final JSONObject json = new JSONObject(responseData);
-                       // Log.d(TAG,"response received: " + json);
-                        activity.runOnUiThread(new Runnable() {
+                        if(!runOnbackground)
+                            activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 if(listener !=null)
                                     listener.onSuccess(json);
                             }
-                        });
+                            });
+                        else
+                            if(listener != null)
+                                listener.onSuccess(json);
 
                     }
 
@@ -89,27 +130,6 @@ public class NetworkUtil {
             }
         });
     }
-
-    public void cancelMovieCall(){
-        Log.d("RESPONSE","cancelMovie called");
-        OkHttpClient client = getHttpClient();
-        for(Call call : client.dispatcher().queuedCalls()) {
-            if(call.request().tag().equals(MOVIE_DATA)) {
-                Log.d(TAG, "cancelling call");
-                call.cancel();
-            }
-        }
-        for(Call call : client.dispatcher().runningCalls()) {
-            if(call.request().tag().equals(MOVIE_DATA)){
-                Log.d(TAG,"cancelling call");
-                call.cancel();
-            }
-        }
-
-        client.dispatcher().executorService().shutdown();
-    }
-
-
 
 
 }
